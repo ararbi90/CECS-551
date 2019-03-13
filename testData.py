@@ -68,54 +68,54 @@ def getAlexNet():
     model = Sequential()
 
     # 1st Convolutional Layer
-    model.add(Conv2D(filters=96, input_shape=(48,48,1), kernel_size=(11,11), strides=(4,4), padding='valid'))
-    model.add(Activation('relu'))
+    model.add(Conv2D(filters=96, input_shape=(1,48,48), kernel_size=(11,11), strides=(4,4), padding='same', activation ='relu'))
+    #model.add(activation ='relu')
     # Max Pooling
-    model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2), padding='valid'))
+    model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2), padding='same'))
 
     # 2nd Convolutional Layer
-    model.add(Conv2D(filters=256, kernel_size=(11,11), strides=(1,1), padding='valid'))
-    model.add(Activation('relu'))
+    model.add(Conv2D(filters=256, kernel_size=(11,11), strides=(1,1), padding='same', activation ='relu'))
+    #model.add(activation ='relu')
     # Max Pooling
-    model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2), padding='valid'))
+    model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2), padding='same'))
 
     # 3rd Convolutional Layer
-    model.add(Conv2D(filters=384, kernel_size=(3,3), strides=(1,1), padding='valid'))
-    model.add(Activation('relu'))
+    model.add(Conv2D(filters=384, kernel_size=(3,3), strides=(1,1), padding='same', activation ='relu'))
+    #model.add(activation ='relu')
 
     # 4th Convolutional Layer
-    model.add(Conv2D(filters=384, kernel_size=(3,3), strides=(1,1), padding='valid'))
-    model.add(Activation('relu'))
+    model.add(Conv2D(filters=384, kernel_size=(3,3), strides=(1,1), padding='same', activation ='relu'))
+    #model.add(activation ='relu')
 
     # 5th Convolutional Layer
-    model.add(Conv2D(filters=256, kernel_size=(3,3), strides=(1,1), padding='valid'))
-    model.add(Activation('relu'))
+    model.add(Conv2D(filters=256, kernel_size=(3,3), strides=(1,1), padding='same', activation ='relu'))
+    #model.add(activation ='relu')
     # Max Pooling
-    model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2), padding='valid'))
+    model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2), padding='same'))
 
     # Passing it to a Fully Connected layer
     model.add(Flatten())
     # 1st Fully Connected Layer
-    model.add(Dense(4096, input_shape=(48*48*1,)))
-    model.add(Activation('relu'))
+    model.add(Dense(4096, input_shape=(48*48*1,), activation ='relu'))
+    #model.add(activation ='relu')
     # Add Dropout to prevent overfitting
     model.add(Dropout(0.4))
 
     # 2nd Fully Connected Layer
-    model.add(Dense(4096))
-    model.add(Activation('relu'))
+    model.add(Dense(4096, activation ='relu'))
+    #model.add(activation ='relu')
     # Add Dropout
     model.add(Dropout(0.4))
 
     # 3rd Fully Connected Layer
-    model.add(Dense(1000))
-    model.add(Activation('relu'))
+    model.add(Dense(1000, activation ='relu'))
+   # model.add(activation ='relu')
     # Add Dropout
     model.add(Dropout(0.4))
 
     # Output Layer
-    model.add(Dense(7))
-    model.add(Activation('softmax'))
+    model.add(Dense(7, activation ='softmax'))
+    #model.add(activation ='softmax')
 
     # Compile the model
     model.compile(loss=keras.losses.categorical_crossentropy, optimizer='adam', metrics=['accuracy']) 
@@ -123,7 +123,7 @@ def getAlexNet():
     return model
 
 def getXception():
-    keras.applications.xception.Xception(include_top=True, weights=None, input_tensor=None, input_shape=(1, 48, 48), pooling=None, classes=7)
+    model = keras.applications.xception.Xception(include_top=True, weights=None, input_tensor=None, input_shape=(1, 48, 48), pooling=None, classes=7)
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
 
@@ -191,21 +191,17 @@ def trainCNN(train, test):
     y_test = np_utils.to_categorical(y_test)
 
 
-    model = larger_model()
+    # model = larger_model()
     # model = getVGG16()
-    # model.summary()
     # model = getXception()
-    # model.summary()
     # model = getRasNet50()
-    # model.summary()
     # model = getInception()
-    # model.summary()
     # model = getDenseNet()
-    # model.summary()
+
 
     # Fit the model
-    # model = getAlexNet()
-    # model.summary()
+    model = getAlexNet()
+    model.summary()
     model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=20, batch_size=200, verbose=1)
     # # Final evaluation of the model
     scores = model.evaluate(X_test, y_test, verbose=0)
