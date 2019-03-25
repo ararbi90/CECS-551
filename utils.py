@@ -12,7 +12,6 @@ import numpy as np
 import os
 import platform
 import csv
-import random
 
 def csv2pickle(path_csv):
     training = {}
@@ -78,5 +77,6 @@ def load_batch(filename):
 
 def load_data():
   Xtr, Ytr = load_batch("train")
-  Xte, Yte = load_batch("publictest")
-  return Xtr, Ytr, Xte, Yte
+  Xpubte, Ypubte = load_batch("publictest")
+  Xprite, Yprite = load_batch("privatetest")
+  return Xtr, Ytr, Xpubte, Ypubte, Xprite, Yprite
