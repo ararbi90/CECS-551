@@ -65,13 +65,13 @@ def load_batch(filename):
     X = np.array(datadict['pixels'])
     Y = datadict['emotion']
     if filename == "train":
-        X = X.reshape(28709, 48, 48).astype("float")
+        X = X.reshape(28709, 1, 48, 48).transpose(0,2,3,1).astype("float")
         Y = np.array(Y)
     elif filename == "publictest":
-        X = X.reshape(3589, 48, 48).astype("float")
+        X = X.reshape(3589, 1, 48, 48).transpose(0,2,3,1).astype("float")
         Y = np.array(Y)
     elif filename == "privatetest":
-        X = X.reshape(3589, 48, 48).astype("float")
+        X = X.reshape(3589, 1, 48, 48).transpose(0,2,3,1).astype("float")
         Y = np.array(Y)
   return X, Y
 
