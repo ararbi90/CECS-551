@@ -80,3 +80,29 @@ def load_data():
   Xpubte, Ypubte = load_batch("publictest")
   Xprite, Yprite = load_batch("privatetest")
   return Xtr, Ytr, Xpubte, Ypubte, Xprite, Yprite
+
+def load_3d_batch(filename):
+  """ load single batch of cifar """
+  with open('datasets/'+ filename, 'rb') as f:
+    datadict = load_pickle(f)
+    X = np.array(datadict['pixels'])
+    Y = datadict['emotion']
+    if filename == "train":
+        X = X.reshape(28709, 48, 48).astype("int")
+        X = X[:, :, :, None] * np.ones(3, dtype=int)[None, None, None, :]
+        Y = np.array(Y)
+    elif filename == "publictest":
+        X = X.reshape(3589, 48, 48).astype("int")
+        X = X[:, :, :, None] * np.ones(3, dtype=int)[None, None, None, :]
+        Y = np.array(Y)
+    elif filename == "privatetest":
+        X = X.reshape(3589, 48, 48).astype("int")
+        X = X[:, :, :, None] * np.ones(3, dtype=int)[None, None, None, :]
+        Y = np.array(Y)
+  return X, Y
+
+def load_3d_data():
+  Xtr, Ytr = load_3d_batch("train")
+  Xpubte, Ypubte = load_3d_batch("publictest")
+  Xprite, Yprite = load_3d_batch("privatetest")
+  return Xtr, Ytr, Xpubte, Ypubte, Xprite, Yprite
